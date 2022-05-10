@@ -8,6 +8,7 @@ import propTypes from 'prop-types';
 import {} from 'react-router-dom';
 import CourseForm from './CourseForm';
 import { newCourse } from '../../../tools/mockData';
+import Spinner from '../common/Spinner';
 
 /*
 class ManageCoursePage extends React.Component {
@@ -66,16 +67,16 @@ function ManageCoursePage({
 		});
 	}
 
-	return (
-		<>
-			<CourseForm
-				course={course}
-				errors={errors}
-				authors={authors}
-				onChange={handleChange}
-				onSave={handleSave}
-			/>
-		</>
+	return authors.length === 0 || courses.length === 0 ? (
+		<Spinner />
+	) : (
+		<CourseForm
+			course={course}
+			errors={errors}
+			authors={authors}
+			onChange={handleChange}
+			onSave={handleSave}
+		/>
 	);
 }
 
