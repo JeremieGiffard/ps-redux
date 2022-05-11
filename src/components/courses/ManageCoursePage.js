@@ -9,7 +9,7 @@ import {} from 'react-router-dom';
 import CourseForm from './CourseForm';
 import { newCourse } from '../../../tools/mockData';
 import Spinner from '../common/Spinner';
-
+import { toast } from 'react-toastify';
 /*
 class ManageCoursePage extends React.Component {
 	componentDidMount() {
@@ -36,6 +36,7 @@ function ManageCoursePage({
 }) {
 	const [course, setCourse] = useState({ ...props.course });
 	const [errors, setErrors] = useState({});
+	const [saving, setSaving] = useState(false);
 
 	useEffect(() => {
 		if (courses.length === 0) {
@@ -60,11 +61,31 @@ function ManageCoursePage({
 		}));
 	}
 
+	function formIsValid() {
+		const { title, authorId, category } = course;
+		const errors = {};
+		if (!title) errors.title = 'Title is required.';
+		if (!authorId) errors.author = 'Author is required.';
+		if (!category) errors.category = 'Category is required.';
+
+		setErrors(errors);
+		//form valide if errors have no properties
+		return Object.keys(errors).length === 0;
+	}
+
 	function handleSave(event) {
 		event.preventDefault();
-		saveCourse(course).then(() => {
-			history.push('/courses');
-		});
+		if (!formIsValid()) return;
+		setSaving(true);
+		saveCourse(course)
+			.then(() => {
+				toast.success('Course saved!');
+				history.push('/courses');
+			})
+			.catch((error) => {
+				setSaving(false);
+				setErrors({ onSave: error.message });
+			});
 	}
 
 	return authors.length === 0 || courses.length === 0 ? (
@@ -76,6 +97,7 @@ function ManageCoursePage({
 			authors={authors}
 			onChange={handleChange}
 			onSave={handleSave}
+			saving={saving}
 		/>
 	);
 }
