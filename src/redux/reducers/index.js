@@ -1,13 +1,12 @@
-import { combineReducers } from 'redux';
-import courses from './courseReducer';
-import authors from './authorReducer';
-import apiCallStatusInProgress from './apiStatusReducer';
+import { combineReducers } from "redux";
+import courses from "./courseReducer";
+import authors from "./authorReducer";
+import apiCallsInProgress from "./apiStatusReducer";
 
-const rootReducter = combineReducers({
-	// courses: courses          //right and left are the same
-	courses,
-	authors,
-	apiCallStatusInProgress,
+const rootReducer = combineReducers({
+  courses,
+  authors,
+  apiCallsInProgress
 });
 
-export default rootReducter;
+export default rootReducer;
